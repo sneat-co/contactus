@@ -1,0 +1,21 @@
+package api4contactus
+
+import (
+	"net/http"
+
+	"github.com/sneat-co/contactus/backend/dto4contactus"
+	"github.com/sneat-co/contactus/backend/facade4contactus"
+	"github.com/sneat-co/sneat-go-core/apicore"
+	"github.com/sneat-co/sneat-go-core/apicore/verify"
+	"github.com/sneat-co/sneat-go-core/facade"
+)
+
+var setContactsStatus = facade4contactus.SetContactsStatus
+
+func httpSetContactStatus(w http.ResponseWriter, r *http.Request) {
+	var request dto4contactus.SetContactsStatusRequest
+	apicore.HandleAuthenticatedRequestWithBody(w, r, &request, verify.DefaultJsonWithAuthRequired, http.StatusOK,
+		func(ctx facade.ContextWithUser) (any, error) {
+			return nil, setContactsStatus(ctx, request)
+		})
+}
