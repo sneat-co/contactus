@@ -93,14 +93,19 @@
   },
   "release": {
     "projects": [
-      "ext-contactus-contract"
+      "ext-contactus-contract",
+      "ext-contactus-shared"
     ],
-    "projectsRelationship": "independent",
+    "projectsRelationship": "fixed",
     "docker": {
       "skipVersionActions": true
     },
     "version": {
       "preVersionCommand": "pnpm dlx nx run-many -t build"
+    },
+    "releaseTagPattern": "v{version}",
+    "changelog": {
+      "automaticFromRef": true
     }
   },
   "plugins": [
