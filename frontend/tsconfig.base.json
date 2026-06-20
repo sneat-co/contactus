@@ -1,0 +1,36 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@sneat/extension-contactus-contract": [
+        "./libs/extensions/contactus/contract/src/index.ts"
+      ],
+      "@sneat/extension-contactus-shared": [
+        "./libs/extensions/contactus/shared/src/index.ts"
+      ],
+      "@sneat/extension-contactus-internal": [
+        "libs/extensions/contactus/internal/src/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
+}
