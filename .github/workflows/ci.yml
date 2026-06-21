@@ -25,12 +25,10 @@ jobs:
       working-directory: frontend
       targets: "lint test build"
 
-  # TODO: re-enable the e2e job once the standalone app's e2e project
-  # (frontend/apps/contactus-app-e2e) is scaffolded. It is referenced here but
-  # does not exist yet, so the job could never pass.
-  # e2e:
-  #   needs: [backend, frontend]
-  #   uses: sneat-co/cicd/.github/workflows/playwright-e2e.yml@main
-  #   with:
-  #     working-directory: frontend
-  #     e2e-project-directory: frontend/apps/contactus-app-e2e
+  # E2E runs only after both backend and frontend succeed.
+  e2e:
+    needs: [backend, frontend]
+    uses: sneat-co/cicd/.github/workflows/playwright-e2e.yml@main
+    with:
+      working-directory: frontend
+      e2e-project-directory: frontend/apps/contactus-app-e2e
