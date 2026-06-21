@@ -3,8 +3,8 @@ package dal4contactus
 import (
 	"testing"
 
-	"github.com/sneat-co/sneat-core-modules/contactusmodels/const4contactus"
 	"github.com/sneat-co/contactus/backend/dbo4contactus"
+	"github.com/sneat-co/sneat-core-modules/contactusmodels/const4contactus"
 	"github.com/stretchr/testify/assert"
 )
 

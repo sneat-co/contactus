@@ -3,8 +3,8 @@ package dal4contactus
 import (
 	"github.com/dal-go/dalgo/dal"
 	"github.com/dal-go/dalgo/record"
-	"github.com/sneat-co/sneat-core-modules/contactusmodels/const4contactus"
 	"github.com/sneat-co/contactus/backend/dbo4contactus"
+	"github.com/sneat-co/sneat-core-modules/contactusmodels/const4contactus"
 	"github.com/sneat-co/sneat-go-core/coretypes"
 
 	"github.com/sneat-co/sneat-core-modules/spaceus/dbo4spaceus"
