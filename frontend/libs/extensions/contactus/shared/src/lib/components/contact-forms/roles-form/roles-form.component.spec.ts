@@ -60,11 +60,24 @@ describe('RolesFormComponent', () => {
   });
 
   it('configures educator staff roles on space type change', () => {
-    vi.spyOn(location, 'pathname', 'get').mockReturnValue('/space/staff');
-    c().onSpaceTypeChanged({ id: 's1', type: 'educator' });
-    expect(component.roles?.map((r) => r.id)).toEqual([
-      'teacher',
-      'administrator',
-    ]);
+    // jsdom's location.pathname getter is not configurable, so vi.spyOn() throws
+    // "Cannot redefine property: pathname". Override window.location instead, then restore.
+    const originalLocation = window.location;
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { ...originalLocation, pathname: '/space/staff' },
+    });
+    try {
+      c().onSpaceTypeChanged({ id: 's1', type: 'educator' });
+      expect(component.roles?.map((r) => r.id)).toEqual([
+        'teacher',
+        'administrator',
+      ]);
+    } finally {
+      Object.defineProperty(window, 'location', {
+        configurable: true,
+        value: originalLocation,
+      });
+    }
   });
 });
