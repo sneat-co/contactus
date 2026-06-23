@@ -93,7 +93,7 @@
   },
   "release": {
     "projects": [
-      "ext-contactus-contract",
+      "ext-contactus-internal",
       "ext-contactus-shared"
     ],
     "projectsRelationship": "fixed",

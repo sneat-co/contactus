@@ -23,13 +23,15 @@ jobs:
           fetch-depth: 0
           ref: ${{ inputs.ref }}
       - uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
-      - run: pnpm nx run-many -t build -p ext-contactus-contract ext-contactus-shared
-      - name: Publish contract & shared to npm
+      - run: pnpm nx run-many -t build -p ext-contactus-internal ext-contactus-shared
+      - name: Publish internal & shared to npm
         run: pnpm nx release publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
