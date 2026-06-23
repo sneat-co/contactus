@@ -26,6 +26,8 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -35,7 +37,7 @@ jobs:
         run: |
           git config --global user.email "ci@sneat.co"
           git config --global user.name "Sneat CI"
-      - name: Release (version + changelog + publish contract & shared)
+      - name: Release (version + changelog + publish internal & shared)
         run: pnpm nx release --yes
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
