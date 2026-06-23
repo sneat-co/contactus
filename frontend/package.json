@@ -30,6 +30,7 @@
     "@sneat/dto": "0.12.1",
     "@sneat/extension-assetus-contract": "^0.0.5",
     "@sneat/extension-calendarius-contract": "^0.12.0",
+    "@sneat/extension-contactus-contract": "0.12.1",
     "@sneat/random": "0.0.4",
     "@sneat/space-components": "0.12.1",
     "@sneat/space-models": "0.12.1",

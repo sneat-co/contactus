@@ -14,6 +14,7 @@ import (
 	"github.com/sneat-co/contactus/backend/dto4contactus"
 	"github.com/sneat-co/sneat-core-modules/contactusmodels/briefs4contactus"
 	"github.com/sneat-co/sneat-core-modules/contactusmodels/const4contactus"
+	"github.com/sneat-co/sneat-core-modules/linkage/dbo4linkage"
 	"github.com/sneat-co/sneat-core-modules/linkage/facade4linkage"
 	"github.com/sneat-co/sneat-core-modules/spaceus/dal4spaceus"
 	"github.com/sneat-co/sneat-core-modules/spaceus/dbo4spaceus"
@@ -244,6 +245,14 @@ func CreateContactTx(
 			err = fmt.Errorf("failed to update relationships in related items: %w", err)
 			return
 		}
+	}
+
+	// A contact with no related items must carry the "no relations" sentinel
+	// relatedIDs=['-'] (see dbo4linkage.ValidateRelatedAndRelatedIDs). The
+	// new-contact form can create relationship-less contacts, so default it here
+	// when no relationship was supplied; otherwise Validate() rejects the record.
+	if len(contactDbo.Related) == 0 && len(contactDbo.RelatedIDs) == 0 {
+		contactDbo.RelatedIDs = []string{dbo4linkage.NoRelatedID}
 	}
 
 	contact = dal4contactus.NewContactEntryWithData(request.SpaceID, contactID, contactDbo)

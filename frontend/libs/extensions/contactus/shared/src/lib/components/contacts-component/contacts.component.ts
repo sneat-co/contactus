@@ -27,6 +27,7 @@ import {
 } from '@ionic/angular/standalone';
 import { FilterItemComponent } from '@sneat/components';
 import {
+  CONTACT_NAV_SERVICE,
   ContactRole,
   IContactWithBrief,
   IContactWithBriefAndSpace,
@@ -77,6 +78,7 @@ export class ContactsComponent extends SneatBaseComponent implements OnInit {
   public readonly $space = input.required<ISpaceContext>();
 
   public readonly $roleID = input<ContactRole | undefined>();
+  public readonly $groupID = input<string | undefined>();
   protected readonly $role = signal<OptionalContactRoleIdAndBrief>(undefined);
 
   @Input() command?: Observable<ContactsComponentCommand>;
@@ -101,6 +103,7 @@ export class ContactsComponent extends SneatBaseComponent implements OnInit {
   }
 
   private readonly spaceNavService = inject(SpaceNavService);
+  private readonly contactNavService = inject(CONTACT_NAV_SERVICE);
 
   public readonly $allContacts = input.required<
     readonly IContactWithCheck[] | undefined
@@ -243,15 +246,13 @@ export class ContactsComponent extends SneatBaseComponent implements OnInit {
     if (!space.id && !space.type) {
       return;
     }
-    try {
-      await this.spaceNavService.navigateForwardToSpacePage(
-        space,
-        'new-contact',
-        { queryParams: this.$roleID() ? { role: this.$roleID() } : undefined },
-      );
-    } catch (err) {
-      this.errorLogger.logError(err, 'failed to navigate to new contact page');
-    }
+    // Pass both group and role so the new-contact wizard can skip the steps the
+    // user already implicitly chose. goNewContactPage strips undefined params,
+    // so a missing groupID behaves exactly as before (role-only / no params).
+    this.contactNavService.goNewContactPage(space, {
+      group: this.$groupID(),
+      role: this.$roleID(),
+    });
   };
 
   protected contactSelectionChanged(args: ICheckChangedArgs) {

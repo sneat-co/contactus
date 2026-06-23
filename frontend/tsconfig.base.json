@@ -18,9 +18,6 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sneat/extension-contactus-contract": [
-        "./libs/extensions/contactus/contract/src/index.ts"
-      ],
       "@sneat/extension-contactus-shared": [
         "./libs/extensions/contactus/shared/src/index.ts"
       ],

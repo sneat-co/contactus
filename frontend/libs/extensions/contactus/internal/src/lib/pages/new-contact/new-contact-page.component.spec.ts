@@ -44,6 +44,9 @@ describe('ContactNewPage', () => {
     $parentContactID(): string;
     $contact(): unknown;
     $spaceRef: { set(v: unknown): void };
+    selectGroupAndRole$: {
+      value: { group?: { id: string }; role?: { id: string } } | undefined;
+    };
   }
   const t = () => component as unknown as ITestable;
   const paramMap = (m: Record<string, string>) => ({
@@ -75,6 +78,18 @@ describe('ContactNewPage', () => {
       expect(t().$contactRoleID()).toBe('tenant');
       expect(t().$assetID()).toBe('a1');
       expect(t().$parentContactID()).toBe('p1');
+    });
+
+    it('forwards group and role into selectGroupAndRole$ so the wizard can skip those steps', () => {
+      t().onUrlParamsChanged(paramMap({ group: 'family', role: 'member' }));
+      const emitted = t().selectGroupAndRole$.value;
+      expect(emitted?.group?.id).toBe('family');
+      expect(emitted?.role?.id).toBe('member');
+    });
+
+    it('does not emit a preselection when neither group nor role is present', () => {
+      t().onUrlParamsChanged(paramMap({ relation: 'child' }));
+      expect(t().selectGroupAndRole$.value).toBeUndefined();
     });
   });
 
