@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   OnInit,
   signal,
 } from '@angular/core';
@@ -18,16 +19,20 @@ import {
 } from '@ionic/angular/standalone';
 import { ContactusServicesModule } from '../../services';
 import {
+  IContactAddEventArgs,
   OptionalContactGroupIdAndBrief,
   OptionalContactRoleIdAndBrief,
   NewContactFormComponent,
 } from '@sneat/extension-contactus-shared';
 import {
+  ContactGroupWithIdAndBrief,
   ContactIdAndDboWithSpaceRef,
   ContactRole,
   ContactToContactRelation,
+  IContactRoleWithIdAndBrief,
   NewContactBaseDboAndSpaceRef,
 } from '@sneat/extension-contactus-contract';
+import { BehaviorSubject } from 'rxjs';
 import { emptySpaceRef } from '@sneat/core';
 import {
   SpaceBaseComponent,
@@ -80,6 +85,13 @@ export class NewContactPageComponent
   protected readonly $contactRoleID = signal<ContactRole | undefined>(
     undefined,
   );
+
+  // Feeds the preselected group/role (from URL query params) into the contact
+  // form so the wizard can skip the group/role steps the user already chose.
+  // BehaviorSubject replays the latest value to the form when it subscribes.
+  protected readonly selectGroupAndRole$ = new BehaviorSubject<
+    IContactAddEventArgs | undefined
+  >(undefined);
   protected readonly $assetID = signal<string>('');
 
   protected readonly $contactRole =
@@ -102,6 +114,18 @@ export class NewContactPageComponent
     super();
     this.defaultBackPage = 'contacts';
     this.$asset.set(window.history.state?.asset as IAssetContext);
+
+    // The contact's space drives the create request's spaceID. $contact starts
+    // with emptySpaceRef, so fill it once the route's space is loaded; otherwise
+    // createContact fails backend validation ("missing required field spaceID").
+    effect(() => {
+      const space = this.$space();
+      if (space?.id) {
+        this.$contact.update((c) =>
+          c.space?.id === space.id ? c : { ...c, space },
+        );
+      }
+    });
   }
 
   // onContactTypeChanged(v: ContactRole): void {
@@ -142,6 +166,22 @@ export class NewContactPageComponent
     const parentContactID = params.get('contact');
     if (parentContactID && this.$parentContactID() !== parentContactID) {
       this.$parentContactID.set(parentContactID);
+    }
+
+    // Preselect group/role in the form. The form's handler only reads `.id`
+    // (it self-loads the brief by ID), so a minimal id-only object is enough;
+    // the cast satisfies the brief-required event-args type. `event` is unused
+    // by the handler but required by the type.
+    if (contactGroupID || contactRole) {
+      this.selectGroupAndRole$.next({
+        event: new Event('preselect'),
+        group: contactGroupID
+          ? ({ id: contactGroupID } as ContactGroupWithIdAndBrief)
+          : undefined,
+        role: contactRole
+          ? ({ id: contactRole } as IContactRoleWithIdAndBrief)
+          : undefined,
+      });
     }
   };
 

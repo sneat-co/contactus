@@ -79,6 +79,7 @@ export class ContactsPageComponent
 
   // public readonly $filter = signal<string>('');
   public readonly $role = signal<ContactRole | undefined>(undefined);
+  public readonly $group = signal<string | undefined>(undefined);
 
   protected $pageTitle = computed(() => {
     const role = this.$role();
@@ -107,6 +108,7 @@ export class ContactsPageComponent
     this.route.queryParamMap.pipe(this.takeUntilDestroyed()).subscribe({
       next: (q) => {
         this.$role.set((q.get('role') as ContactRole) || undefined);
+        this.$group.set(q.get('group') || undefined);
       },
     });
     this.spaceIDChanged$.subscribe({

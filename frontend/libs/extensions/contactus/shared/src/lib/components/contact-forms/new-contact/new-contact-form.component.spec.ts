@@ -58,6 +58,10 @@ describe('NewContactFormComponent', () => {
     expect(emit).toHaveBeenCalledWith(contact);
   });
 
+  it('isInModal defaults to false (full-page shows the inline Create button)', () => {
+    expect(component.isInModal).toBe(false);
+  });
+
   it('onTabChange sets the tab signal', () => {
     c().onTabChange({ detail: { value: 'company' } });
     expect(c().$tab()).toBe('company');

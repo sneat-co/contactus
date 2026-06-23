@@ -147,6 +147,7 @@
         <sneat-new-contact-form
           [$space]="$space()"
           [$contact]="$contactWithDbo()"
+          [isInModal]="true"
           [command]="newContactCommand$"
           [selectGroupAndRole$]="selectGroupAndRole$"
           (creatingChange)="$isNewContactCreating.set($event)"

@@ -52,6 +52,11 @@ export class NewContactFormComponent
 
   @Input() command?: Observable<NewContactFormCommand>;
   @Input() selectGroupAndRole$?: Observable<IContactAddEventArgs | undefined>;
+  // When true (e.g. inside the contacts-selector modal) the person form hides
+  // its own "Create contact" button and submission is driven via `command`.
+  // On a full page (new-contact page) this stays false so the gated inline
+  // Create button is shown.
+  @Input() isInModal = false;
 
   private readonly injector = inject(Injector);
 

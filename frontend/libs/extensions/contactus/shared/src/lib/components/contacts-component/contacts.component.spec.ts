@@ -4,6 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorLogger } from '@sneat/core';
 import { ClassName } from '@sneat/ui';
 import { SpaceNavService } from '@sneat/space-services';
+import { CONTACT_NAV_SERVICE } from '@sneat/extension-contactus-contract';
 
 import { Subject } from 'rxjs';
 import { ContactsComponent } from './contacts.component';
@@ -29,6 +30,10 @@ describe('ContactsComponent', () => {
           useValue: {
             navigateForwardToSpacePage: vi.fn(() => Promise.resolve(true)),
           },
+        },
+        {
+          provide: CONTACT_NAV_SERVICE,
+          useValue: { goNewContactPage: vi.fn() },
         },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -58,6 +63,10 @@ describe('ContactsComponent', () => {
   const spaceNav = () =>
     TestBed.inject(SpaceNavService) as unknown as {
       navigateForwardToSpacePage: ReturnType<typeof vi.fn>;
+    };
+  const contactNav = () =>
+    TestBed.inject(CONTACT_NAV_SERVICE) as unknown as {
+      goNewContactPage: ReturnType<typeof vi.fn>;
     };
 
   const withContacts = (contacts: unknown[], space = { id: 's1', type: 'family' }) => {
@@ -131,10 +140,20 @@ describe('ContactsComponent', () => {
 
   it('addNewContact navigates to the new-contact page', async () => {
     await c().addNewContact(stopEvent());
-    expect(spaceNav().navigateForwardToSpacePage).toHaveBeenCalledWith(
+    expect(contactNav().goNewContactPage).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'test-space' }),
+      expect.objectContaining({ group: undefined, role: undefined }),
+    );
+  });
+
+  it('addNewContact passes the current group and role so the wizard can skip them', async () => {
+    fixture.componentRef.setInput('$roleID', 'parent');
+    fixture.componentRef.setInput('$groupID', 'family');
+    fixture.detectChanges();
+    await c().addNewContact(stopEvent());
+    expect(contactNav().goNewContactPage).toHaveBeenCalledWith(
       expect.anything(),
-      'new-contact',
-      expect.anything(),
+      { group: 'family', role: 'parent' },
     );
   });
 

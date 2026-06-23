@@ -1,4 +1,5 @@
 // TODO: always export from './folder/file'
+export * from './contact-events';
 export * from './with-new-contact-input';
 export * from './basic-contact-form';
 export * from './contact-details';
