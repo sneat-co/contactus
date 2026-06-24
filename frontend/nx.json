@@ -96,7 +96,7 @@
       "ext-contactus-internal",
       "ext-contactus-shared"
     ],
-    "projectsRelationship": "fixed",
+    "projectsRelationship": "independent",
     "docker": {
       "skipVersionActions": true
     },
