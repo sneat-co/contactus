@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/dal-go/dalgo/dal"
+	"github.com/sneat-co/contactus-ext/backend/contactusmodels/briefs4contactus"
 	"github.com/sneat-co/contactus/backend/dal4contactus"
-	"github.com/sneat-co/sneat-core-modules/contactusmodels/briefs4contactus"
 	"github.com/sneat-co/sneat-go-core/coretypes"
 	"github.com/strongo/logus"
 )
