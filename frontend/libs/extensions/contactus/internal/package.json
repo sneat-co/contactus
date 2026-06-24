@@ -29,6 +29,5 @@
     "@sneat/space-services": "^0.12.0",
     "@sneat/ui": "^0.12.0"
   },
-  "sideEffects": false,
-  "private": true
+  "sideEffects": false
 }
