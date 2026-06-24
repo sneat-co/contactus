@@ -1,10 +1,10 @@
 package contactusext
 
 import (
+	"github.com/sneat-co/contactus-ext/backend/contactusmodels/const4contactus"
 	"github.com/sneat-co/contactus/backend/api4contactus"
 	"github.com/sneat-co/contactus/backend/dbo4contactus"
 	"github.com/sneat-co/contactus/backend/delays4contactus"
-	"github.com/sneat-co/sneat-core-modules/contactusmodels/const4contactus"
 	"github.com/sneat-co/sneat-core-modules/invitus/facade4invitus"
 	"github.com/sneat-co/sneat-core-modules/linkage/facade4linkage"
 	"github.com/sneat-co/sneat-core-modules/spaceus/dal4spaceus"

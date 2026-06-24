@@ -5,9 +5,9 @@ import (
 	"slices"
 
 	"github.com/dal-go/dalgo/update"
+	"github.com/sneat-co/contactus-ext/backend/contactusmodels/const4contactus"
 	"github.com/sneat-co/contactus/backend/dal4contactus"
 	"github.com/sneat-co/contactus/backend/dto4contactus"
-	"github.com/sneat-co/sneat-core-modules/contactusmodels/const4contactus"
 	"github.com/strongo/slice"
 )
 
