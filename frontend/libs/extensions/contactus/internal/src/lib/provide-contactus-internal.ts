@@ -14,7 +14,6 @@ import {
   ContactRoleService,
   ContactService,
   ContactusNavService,
-  ContactusSpaceContextService,
   ContactusSpaceService,
   InviteService,
   MemberGroupService,
@@ -27,13 +26,16 @@ import {
  * extensions must NOT import this.
  */
 export function provideContactusInternal(): Provider[] {
+  // NOTE: ContactusSpaceContextService is intentionally NOT provided here — it
+  // is manually instantiated (its constructor takes plain Observables: the
+  // destroyed$ and spaceID$ streams), so it has no Angular DI factory and
+  // registering it as a provider throws NG0204. Consumers `new` it directly.
   return [
     ContactService,
     ContactNavService,
     ContactGroupService,
     ContactRoleService,
     ContactusSpaceService,
-    ContactusSpaceContextService,
     ContactusNavService,
     MemberService,
     MemberGroupService,
