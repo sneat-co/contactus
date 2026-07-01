@@ -97,7 +97,7 @@
       }
       @if (groups) {
         @for (group of groups; track group.id) {
-          <ion-item (click)="goGroup(group)" tappable>
+          <ion-item (click)="goGroup(group)" button>
             <ion-label>
               {{ group.brief?.title }}
             </ion-label>
