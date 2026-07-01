@@ -57,6 +57,26 @@ The boundary matrix is enforced by `@nx/enforce-module-boundaries` in
 to bind the contactus contract tokens to their concrete services, and mounts
 `contactusRoutes` from `-internal`.
 
+### ⚠️ Cross-extension imports — do NOT import this implementation from another extension
+
+**Another extension MUST NOT import `@sneat/extension-contactus-shared` or
+`@sneat/extension-contactus-internal`** (the implementation shipped from this
+repo). A sibling extension depends **only on the contract**,
+**[`@sneat/extension-contactus-contract`](frontend/libs/extensions/contactus/contract)**,
+and obtains contactus capabilities through its dependency-inverted
+`InjectionToken`s — e.g. `CONTACTUS_SPACE_SERVICE` (`watchContactBriefs`),
+`CONTACT_SERVICE`, `CONTACT_NAV_SERVICE` — which the **host app** (composition
+root) binds to the concrete services via `provideContactusInternal()`.
+
+Only the composition-root **app** may import `-shared`/`-internal` (to compose
+contactus UI or wire providers). This keeps the cross-extension dependency graph
+acyclic and lets each extension build against a light, stable contract instead of
+the full implementation bundle. If a capability you need from contactus is only in
+`-shared`/`-internal`, the fix is to **expose it as a contract token/interface in
+`-contract`** (per the [`extension-contract-repo`](https://github.com/sneat-co/sneat-libs/tree/main/spec/features/extension-contract-repo/README.md)
+and [`extension-library-architecture`](https://github.com/sneat-co/sneat-libs/tree/main/spec/features/extension-library-architecture/README.md)
+conventions) — never to import the implementation.
+
 ## Standards
 
 This is a **Sneat extension** — build it against the shared platform standards:
