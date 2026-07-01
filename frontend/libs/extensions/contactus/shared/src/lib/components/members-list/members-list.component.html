@@ -12,7 +12,7 @@
 @for (member of membersToDisplay; track member.id; let isLast = $last) {
   <ion-item-sliding [@addRemove]="'added'">
     <ion-item
-      tappable="true"
+      button
       [lines]="isLast ? 'none' : undefined"
       routerLink="/space/{{ $spaceType() || 'UNKNOWN_TYPE' }}/{{
         $spaceID()
